@@ -16,9 +16,7 @@ class Solution {
     public int combinationSum4(int[] nums, int target) {
         int n = nums.length;
         int[] dp = new int[target+1];
-        for(int i=0; i<=target; i++){
-            dp[i] = -1;
-        }
+        Arrays.fill(dp, -1);
         return solve(n, target, nums, dp);
     }
 }
