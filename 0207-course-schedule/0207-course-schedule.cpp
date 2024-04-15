@@ -2,44 +2,38 @@ class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         
-        int n = numCourses;
-        vector<int> indegree(n+1, 0);
-        vector<int> adj[n+1];
-
-        for(auto it : prerequisites){
-            int u = it[0];
-            int v = it[1];
-
-            adj[v].push_back(u);
+        vector<int> adj[numCourses];
+        // i == index
+        for(int i=0; i<prerequisites.size(); i++){
+            int v = prerequisites[i][0];
+            int u = prerequisites[i][1];
+            adj[u].push_back(v);
         }
 
-        queue<int> q;
-        for(int i=0; i<n; i++){
-            for(int j : adj[i]){
-                indegree[j]++;
+        vector<int> indegree(numCourses, 0);
+
+        for(int node=0; node < numCourses; node++){
+            for(int edge: adj[node]){
+                indegree[edge]++;
             }
         }
-
-        for(int i=0; i<n; i++){
-            if(indegree[i] == 0) q.push(i);
+        queue<int> q;
+        for(int node=0; node <numCourses; node++){
+            if(indegree[node] == 0) q.push(node);
         }
-
         int totalNode = 0;
 
         while(!q.empty()){
             int node = q.front();
             q.pop();
-
             totalNode++;
 
-            for(int newNode : adj[node]){
-
-                indegree[newNode]--;
-                if(indegree[newNode] == 0) q.push(newNode);
+            for(int edge : adj[node]){
+                indegree[edge]--;
+                if(indegree[edge] == 0) q.push(edge);
             }
         }
 
-        if(totalNode == n) return true;
-        return false;
+        return totalNode == numCourses;
     }
 };
