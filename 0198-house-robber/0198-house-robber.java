@@ -1,24 +1,22 @@
 class Solution {
 
-    public static int solve(int ind, int[] nums, int[] dp){
-        if(ind<0) return 0;
-        if(ind==0) return nums[0];
+    int maxCount(int[] nums, int ind, int[] dp){
+        if(ind == 0) return nums[ind];
+        if(ind < 0) return 0;
 
         if(dp[ind] != -1) return dp[ind];
 
-        int notTake = 0 + solve(ind-1, nums, dp);
-        int take = nums[ind] + solve(ind-2, nums, dp);
+        int take = nums[ind] + maxCount(nums, ind-2, dp);
+        int notTake = 0 + maxCount(nums, ind-1, dp);
 
-        dp[ind] = Math.max(take, notTake);
-
-        return dp[ind];
+        return dp[ind] = Math.max(take, notTake);
     }
 
     public int rob(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n+1];
         Arrays.fill(dp, -1);
-
-        return solve(n-1, nums, dp);
+        
+        return maxCount(nums, n-1, dp);
     }
 }
